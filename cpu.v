@@ -13,12 +13,10 @@ module cpu(clk,btn,led);
 	reg c_flag=1'b0;
 	
 	rom memory(dout, addr);
-
+		
+	//decoder
 	assign im=dout[3:0];
 	assign op=dout[7:4];
-	
-	assign led=~out_data;
-	
 	
 	always @(posedge clk) begin
 		case(op)
@@ -51,9 +49,13 @@ module cpu(clk,btn,led);
 			
 			4'b1011:out_data<=im;//out im
 		endcase
+		//counter
 		if(op!=4'b1111 && op!=4'b1110)
 			addr<=addr+1;
 		
 	end
+
+	//ledは負論理
+	assign led=~out_data;
 
 endmodule 
